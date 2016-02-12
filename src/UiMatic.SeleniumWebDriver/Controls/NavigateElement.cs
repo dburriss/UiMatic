@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium;
 
 namespace ChimpLab.UiMatic.SeleniumWebDriver.Controls

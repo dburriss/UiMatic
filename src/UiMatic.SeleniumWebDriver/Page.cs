@@ -60,7 +60,7 @@ namespace ChimpLab.UiMatic.SeleniumWebDriver
             //if(driver.GetType() == typeof(ChromeDriver))
             //    return new ChromeHomePage(baseUrl, driver);
             //TODO: look for driver specific page
-            var page = (TPage)Activator.CreateInstance(typeof(TPage), driver);
+            var page = (TPage)Activator.CreateInstance(typeof(TPage), driver, configuration);
             page.baseUrl = baseUrl;
             page.Configuration = configuration;
             //populate IClickable, INavigate, and IInput, etc.

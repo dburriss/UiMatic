@@ -13,6 +13,7 @@
   },
 
   "dependencies": {
+    "Microsoft.Extensions.Configuration.Abstractions": "1.0.0-rc1-final",
     "Selenium.WebDriver": "2.51.0",
     "UiMatic": "0.1.0-rc1-update1"
   }

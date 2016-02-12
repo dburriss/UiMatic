@@ -12,7 +12,8 @@
     "xunit": "2.1.0",
     "xunit.runner.dnx": "2.1.0-rc1-build204",
     "Microsoft.Framework.Configuration": "1.0.0-beta8",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final"
+    "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Configuration.Binder": "1.0.0-rc1-final"
   },
 
   "commands": {

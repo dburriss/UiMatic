@@ -14,14 +14,14 @@ namespace ChimpLab.UiMatic
             CustomSettings = new Dictionary<string, string>();
         }
 
-        public string ChromeDriverLocation { get; set;}
+        public string ChromeDriverLocation { get; set; }
         public string EdgeDriverLocation { get; set; }
-        public string IEDriverLocation { get; set;}
-        public string SafariDriverLocation { get; set;}
+        public string IEDriverLocation { get; set; }
+        public string SafariDriverLocation { get; set; }
 
-        public string CurrentTestName { get; set;}
+        public string CurrentTestName { get; set; }
 
-        public TestTarget CurrentBrowser { get; set;}
+        public TestTarget CurrentBrowser { get; set; }
 
         public IDictionary<string, string> CustomSettings { get; set; }
     }

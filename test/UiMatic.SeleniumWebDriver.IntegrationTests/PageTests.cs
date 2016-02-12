@@ -1,6 +1,10 @@
 ﻿using ChimpLab.UiMatic.SeleniumWebDriver.IntegrationTests.Pages;
 using System.IO;
 using Xunit;
+using Microsoft.Extensions.Configuration.Json;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace ChimpLab.UiMatic.SeleniumWebDriver.IntegrationTests
 {
@@ -27,14 +31,22 @@ namespace ChimpLab.UiMatic.SeleniumWebDriver.IntegrationTests
             var configModel = new DefaultConfig(target);
             var dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
             var testFolder = new DirectoryInfo(Directory.GetCurrentDirectory()).FullName;
-            var provider = new Microsoft.Extensions.Configuration.Json.JsonConfigurationProvider(Path.Combine(testFolder, "appsettings.json"));
+            var provider = new JsonConfigurationProvider(Path.Combine(testFolder, "appsettings.json"));
             var builder = new Microsoft.Extensions.Configuration.ConfigurationBuilder();
             builder.Add(provider, true);
             var config = builder.Build();
-            //TODO: check Microsoft.Extensions.Configuration.ConfigurationBinder
+
             configModel.ChromeDriverLocation = config.GetSection("configuration")["ChromeDriverLocation"];
-            //config.EdgeDriverLocation = "C:\\Program Files (x86)\\Microsoft Web Driver";
+            configModel.CustomSettings = GetData(provider);
             return configModel;
+        }
+
+        private IDictionary<string, string> GetData(Microsoft.Extensions.Configuration.ConfigurationProvider provider)
+        {
+            var type = typeof(Microsoft.Extensions.Configuration.ConfigurationProvider);
+            var pi = type.GetProperty("Data", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+            IDictionary<string, string> data = pi.GetValue(provider, null) as IDictionary<string, string>;
+            return data;
         }
 
         private IDriver GetDriver(TestTarget target, IConfiguration configuration)
