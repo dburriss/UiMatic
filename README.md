@@ -88,7 +88,7 @@ And the **appsettings.json** file is setup like so:
 Above you saw the usage of `IInput` but UiMatic has plenty other controls.
 
 * `IInput` - your basic input textbox
-* `IClickable - for any element you want to be able to click on and do something
+* `IClickable` - for any element you want to be able to click on and do something
 * `INavigate<T>` - like IClickable but returns the page model of the generic type
 * `IRadioGroup` - to represent radio buttons
 * `ICheckBox` - to represent a checkbox
