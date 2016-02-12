@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0-rc1-update1",
+  "description": "UiMAtic Tests Class Library",
+  "authors": [ "Devon Burriss" ],
+  "tags": [ "testing uimatic" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "UiMatic": "0.1.0-rc1-update1",
+    "UiMatic.SeleniumWebDriver": "0.1.0-rc1-update1",
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204",
+    "Microsoft.Framework.Configuration": "1.0.0-beta8",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final"
+  },
+
+  "commands": {
+    "test": "xunit.runner.dnx"
+  },
+
+  "frameworks": {
+    "dnx46": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.ComponentModel.DataAnnotations": "",
+        "System.Threading.Tasks": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0-rc1-update1",
+  "description": "I provide Selenium support for UiMatic.",
+  "authors": [ "Devon Burriss" ],
+  "tags": [ "automated testing unit test selenium saucelabs" ],
+  "projectUrl": "https://github.com/dburriss/UiMatic",
+  "licenseUrl": "https://github.com/dburriss/UiMatic/blob/master/LICENSE",
+
+  "frameworks": {
+    "net451": {
+      "dependencies": { }
+    }
+  },
+
+  "dependencies": {
+    "Selenium.WebDriver": "2.51.0",
+    "UiMatic": "0.1.0-rc1-update1"
+  }
+}

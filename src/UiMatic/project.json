@@ -1,0 +1,26 @@
+﻿{
+  "version": "0.1.0-rc1-update1",
+  "description": "I create page models for writing maintainable automated UI tests.",
+  "authors": [ "Devon Burriss" ],
+  "tags": [ "automated testing unit test selenium codedui saucelabs" ],
+  "projectUrl": "https://github.com/dburriss/UiMatic",
+  "licenseUrl": "https://github.com/dburriss/UiMatic/blob/master/LICENSE",
+
+  "frameworks": {
+    "dotnet5.4": {
+      "dependencies": {
+        "Microsoft.CSharp": "4.0.1-beta-23516",
+        "System.Collections": "4.0.11-beta-23516",
+        "System.Linq": "4.0.1-beta-23516",
+        "System.Runtime": "4.0.21-beta-23516",
+        "System.Threading": "4.0.11-beta-23516"
+      }
+    },
+    "net451": {
+      "dependencies": {
+      }
+    }
+  },
+
+  "dependencies": { }
+}
