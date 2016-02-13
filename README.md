@@ -42,6 +42,7 @@ public class PageTests : TestBase
 
 The test assumes you have the Chrome selenium driver located at *C:\Selenium\chromedriver_win32*
 > This needs to be updated for cross platform handling. 
+
 Or you can use the **appsettings.json** file is setup like so:
 
 ```json
@@ -56,27 +57,58 @@ Or you can use the **appsettings.json** file is setup like so:
 Here is a test that navigates to the Google home page (using Xunit test framework):
 
 ```csharp
-[Theory]
-[InlineData(TestTarget.Chrome)]
-public void Google(TestTarget target)
+public class PageTests : TestBase
 {
-    var config = GetDefaultConfig(target);
-    using (IDriver driver = GetDriver(target, config))
+    [Theory]
+    [InlineData(TestTarget.Chrome)]
+    public void Title_OnGoogleHomePageUsingConfig_IsGoogle(TestTarget target)
     {
-        var homePage = Page.Create<GoogleHomePage>("http://www.google.com/", driver, config);
-        homePage.Go<GoogleHomePage>();
+        //build a custom config
+        var config = GetDriverConfig(target);
+        using (IDriver driver = GetDriver(target, config))
+        {
+            //create page model for test
+            var homePage = Page.Create<GoogleHomePage>(driver);
+            
+            //tell browser to navigate to it
+            homePage.Go<GoogleHomePage>();
 
-        homePage.SearchBox.Value = "TEST";
+            //fill a value into the text box
+            homePage.SearchBox.Value = "TEST";
 
-        Assert.Equal("Google", homePage.Title);
+            //an example of interacting with the config if needed. This gets expected title from config. 
+            var expectedTitle = config.GetPageSetting("home").Title;
+
+            //check the titles match
+            Assert.Equal(expectedTitle, homePage.Title);
+        }
     }
+    
+    public static IConfiguration GetDriverConfig(TestTarget target)
+    {
+        IConfigurationRoot config = GetConfigurationRoot();
+        //create a IConfiguration using DefaultConfig. Create your own if needed but first explore the options in Microsoft's ConfigurationBuilder
+        var configModel = new DefaultConfig(target, config);
+        return configModel;
+    }
+
+    private static IConfigurationRoot GetConfigurationRoot()
+    {
+        var builder = new ConfigurationBuilder();
+        var testFolder = new DirectoryInfo(Directory.GetCurrentDirectory()).FullName;
+        builder.SetBasePath(testFolder);
+        //use json file to configure settings. See http://docs.asp.net/en/latest/fundamentals/configuration.html for more detail on CongifurationBuilder
+        builder.AddJsonFile("appsettings.json");
+        var config = builder.Build();
+        return config;
+    } 
 }
 ```
     
 Where the GoogleHomePage model looks like this:
 
 ```csharp
-[Url(key: "pages:home:url")]
+[Url(key: "home")]
 public class GoogleHomePage : Page
 {
     [Selector(name: "q")]
@@ -87,40 +119,11 @@ public class GoogleHomePage : Page
 }
 ```
 
-## Configuration
-The `GetDefaultConfig` method looks like this:
+> Note the use of a **key** to identify the Url rather than an explicit url address. This will allow your tests to be run against different environments.
 
-> NOTE: The configuration is still under development and will likely simplify greatly.
+If a url is specified in `UrlAttribute` that will be used. If a **key** is specified, that will be used. If **no** `UrlAttribute` is present the page Type name will be used if it is present in the configuration.
+`GoogleTermsPage` below is an example of looking up via type name.
 
-```csharp
-public IConfiguration GetDefaultConfig(TestTarget target)
-{
-    var configModel = new DefaultConfig(target);
-    var dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-    var testFolder = new DirectoryInfo(Directory.GetCurrentDirectory()).FullName;
-    var provider = new JsonConfigurationProvider(Path.Combine(testFolder, "appsettings.json"));
-    var builder = new Microsoft.Extensions.Configuration.ConfigurationBuilder();
-    builder.Add(provider, true);
-    var config = builder.Build();
-
-    configModel.ChromeDriverLocation = config.GetSection("configuration")["ChromeDriverLocation"];
-    configModel.CustomSettings = GetData(provider);
-    return configModel;
-}
-
-private IDictionary<string, string> GetData(Microsoft.Extensions.Configuration.ConfigurationProvider provider)
-{
-    var type = typeof(Microsoft.Extensions.Configuration.ConfigurationProvider);
-    var pi = type.GetProperty("Data", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
-    IDictionary<string, string> data = pi.GetValue(provider, null) as IDictionary<string, string>;
-    return data;
-}
-
-private IDriver GetDriver(TestTarget target, IConfiguration configuration)
-{
-    return VerifyToContinue((t) => DriverFactory.Create(configuration), target).ToIDriver();
-}
-```
 And the **appsettings.json** file is setup like so:
 
 ```json
@@ -154,3 +157,9 @@ Above you saw the usage of `IInput` but UiMatic has plenty other controls.
 * `IDropDownSelect` - to represent dropdowns with a single select option
 * `IMultiSelect` - to represent dropdowns with a multiple select option
 * `IElement` - a general purpose element you want represented in your model
+
+## Selectors
+The selector attribute allows you to select an element based on id, name, css style, or xpath.
+
+In the Google homepage example we saw an example of a name selector `[Selector(name: "q")]` placed on the search box.
+Simply placing the `SelectorAttribute` on the property representing the element on the UI being tested will bind it using the chosen selection criteria.
