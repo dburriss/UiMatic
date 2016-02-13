@@ -7,7 +7,7 @@ The UiMatic framework allows you to create models that represent your pages. The
 
 Here is a test that navigates to the Google home page (using Xunit test framework):
 
-    ```cs
+    ```csharp
     [Theory]
     [InlineData(TestTarget.Chrome)]
     public void Google(TestTarget target)
