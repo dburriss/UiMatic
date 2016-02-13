@@ -43,7 +43,7 @@ public class PageTests : TestBase
 The test assumes you have the Chrome selenium driver located at *C:\Selenium\chromedriver_win32*
 > This needs to be updated for cross platform handling. 
 
-Or you can use the **appsettings.json** file is setup like so:
+Or you can use the **appsettings.json** file in the root of your test project:
 
 ```json
 {
