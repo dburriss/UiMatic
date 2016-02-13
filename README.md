@@ -7,23 +7,23 @@ The UiMatic framework allows you to create models that represent your pages. The
 
 Here is a test that navigates to the Google home page (using Xunit test framework):
 
-    ```csharp
-    [Theory]
-    [InlineData(TestTarget.Chrome)]
-    public void Google(TestTarget target)
+```csharp
+[Theory]
+[InlineData(TestTarget.Chrome)]
+public void Google(TestTarget target)
+{
+    var config = GetDefaultConfig(target);
+    using (IDriver driver = GetDriver(target, config))
     {
-        var config = GetDefaultConfig(target);
-        using (IDriver driver = GetDriver(target, config))
-        {
-            var homePage = Page.Create<GoogleHomePage>("http://www.google.com/", driver, config);
-            homePage.Go<GoogleHomePage>();
+        var homePage = Page.Create<GoogleHomePage>("http://www.google.com/", driver, config);
+        homePage.Go<GoogleHomePage>();
 
-            homePage.SearchBox.Value = "TEST";
+        homePage.SearchBox.Value = "TEST";
 
-            Assert.Equal("Google", homePage.Title);
-        }
+        Assert.Equal("Google", homePage.Title);
     }
-    ```
+}
+```
     
 Where the GoogleHomePage model looks like this:
 
