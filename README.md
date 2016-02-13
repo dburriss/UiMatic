@@ -27,64 +27,69 @@ public void Google(TestTarget target)
     
 Where the GoogleHomePage model looks like this:
 
-    [Url(key: "pages:home:url")]
-    public class GoogleHomePage : Page
-    {
-        [Selector(name: "q")]
-        public IInput SearchBox { get; set; }
+```csharp
+[Url(key: "pages:home:url")]
+public class GoogleHomePage : Page
+{
+    [Selector(name: "q")]
+    public IInput SearchBox { get; set; }
 
-        public GoogleHomePage(IDriver driver, IConfiguration config) : base(driver, config)
-        {}
-    }
-    
+    public GoogleHomePage(IDriver driver, IConfiguration config) : base(driver, config)
+    {}
+}
+```
+
 ## Configuration
 The `GetDefaultConfig` method looks like this:
 
 > NOTE: The configuration is still under development and will likely simplify greatly.
 
-    public IConfiguration GetDefaultConfig(TestTarget target)
-    {
-        var configModel = new DefaultConfig(target);
-        var dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-        var testFolder = new DirectoryInfo(Directory.GetCurrentDirectory()).FullName;
-        var provider = new JsonConfigurationProvider(Path.Combine(testFolder, "appsettings.json"));
-        var builder = new Microsoft.Extensions.Configuration.ConfigurationBuilder();
-        builder.Add(provider, true);
-        var config = builder.Build();
+```csharp
+public IConfiguration GetDefaultConfig(TestTarget target)
+{
+    var configModel = new DefaultConfig(target);
+    var dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+    var testFolder = new DirectoryInfo(Directory.GetCurrentDirectory()).FullName;
+    var provider = new JsonConfigurationProvider(Path.Combine(testFolder, "appsettings.json"));
+    var builder = new Microsoft.Extensions.Configuration.ConfigurationBuilder();
+    builder.Add(provider, true);
+    var config = builder.Build();
 
-        configModel.ChromeDriverLocation = config.GetSection("configuration")["ChromeDriverLocation"];
-        configModel.CustomSettings = GetData(provider);
-        return configModel;
-    }
+    configModel.ChromeDriverLocation = config.GetSection("configuration")["ChromeDriverLocation"];
+    configModel.CustomSettings = GetData(provider);
+    return configModel;
+}
 
-    private IDictionary<string, string> GetData(Microsoft.Extensions.Configuration.ConfigurationProvider provider)
-    {
-        var type = typeof(Microsoft.Extensions.Configuration.ConfigurationProvider);
-        var pi = type.GetProperty("Data", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
-        IDictionary<string, string> data = pi.GetValue(provider, null) as IDictionary<string, string>;
-        return data;
-    }
+private IDictionary<string, string> GetData(Microsoft.Extensions.Configuration.ConfigurationProvider provider)
+{
+    var type = typeof(Microsoft.Extensions.Configuration.ConfigurationProvider);
+    var pi = type.GetProperty("Data", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+    IDictionary<string, string> data = pi.GetValue(provider, null) as IDictionary<string, string>;
+    return data;
+}
 
-    private IDriver GetDriver(TestTarget target, IConfiguration configuration)
-    {
-        return VerifyToContinue((t) => DriverFactory.Create(configuration), target).ToIDriver();
-    }
-    
+private IDriver GetDriver(TestTarget target, IConfiguration configuration)
+{
+    return VerifyToContinue((t) => DriverFactory.Create(configuration), target).ToIDriver();
+}
+```
 And the **appsettings.json** file is setup like so:
 
-    {
-        "configuration": {
-            "IEDriverLocation": "",
-            "ChromeDriverLocation": "D:\\devtools\\Selenium\\chromedriver_win32"
-        },
-        "pages": {
-            "home": {
-                "title": "Search",
-                "url": "http://www.google.com/"
-            }
+```json
+{
+    "configuration": {
+        "IEDriverLocation": "",
+        "ChromeDriverLocation": "D:\\devtools\\Selenium\\chromedriver_win32"
+    },
+    "pages": {
+        "home": {
+            "title": "Search",
+            "url": "http://www.google.com/"
         }
     }
-    
+}
+```
+
 ## Available Control Types
 
 Above you saw the usage of `IInput` but UiMatic has plenty other controls.
