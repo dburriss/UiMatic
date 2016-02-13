@@ -1,4 +1,4 @@
-﻿namespace ChimpLab.UiMatic
+﻿namespace UiMatic
 {
     public enum SelectorType
     {

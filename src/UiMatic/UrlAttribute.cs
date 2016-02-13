@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChimpLab.UiMatic
+namespace UiMatic
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class UrlAttribute : Attribute

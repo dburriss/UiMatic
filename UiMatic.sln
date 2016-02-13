@@ -7,11 +7,11 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UiMatic", "src\UiMatic\UiMa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CE416682-8BE7-4210-89F6-29DCA3005514}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D6653F76-59C8-497E-BC34-D1D54B34A4D4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{D6653F76-59C8-497E-BC34-D1D54B34A4D4}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UiMatic.SeleniumWebDriver", "src\UiMatic.SeleniumWebDriver\UiMatic.SeleniumWebDriver.xproj", "{EFB0C855-F64A-4279-9517-D8B6AA599C13}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UiMatic.SeleniumWebDriver.IntegrationTests", "test\UiMatic.SeleniumWebDriver.IntegrationTests\UiMatic.SeleniumWebDriver.IntegrationTests.xproj", "{623F3AB6-4C19-4FA9-8DDD-0280A0F4BB08}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UiMatic.SeleniumWebDriver.IntegrationTests", "examples\UiMatic.SeleniumWebDriver.IntegrationTests\UiMatic.SeleniumWebDriver.IntegrationTests.xproj", "{623F3AB6-4C19-4FA9-8DDD-0280A0F4BB08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

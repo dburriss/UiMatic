@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ChimpLab.UiMatic
+namespace UiMatic
 {
     public interface ICheckBox : IClickable, IHasSelector, IHavePreferredSelectorType
     {

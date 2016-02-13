@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using OpenQA.Selenium.Interactions;
 
-namespace ChimpLab.UiMatic.SeleniumWebDriver.Controls
+namespace UiMatic.SeleniumWebDriver.Controls
 {
     public class MultiSelect : IMultiSelect
     {

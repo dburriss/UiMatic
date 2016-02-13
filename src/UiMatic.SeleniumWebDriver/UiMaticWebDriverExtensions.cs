@@ -1,7 +1,6 @@
-﻿using ChimpLab.UiMatic.SeleniumWebDriver;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
-namespace ChimpLab.UiMatic.SeleniumWebDriver
+namespace UiMatic.SeleniumWebDriver
 {
     public static class UiMaticWebDriverExtensions
     {
@@ -20,9 +19,12 @@ namespace ChimpLab.UiMatic.SeleniumWebDriver
             return ((WebDriver)driver)._WebDriver;
         }
 
-        public static IDriver ToIDriver(this IWebDriver driver)
+        public static IDriver ToIDriver(this IWebDriver driver, IConfiguration config)
         {
-            return new WebDriver(driver);
+            return new WebDriver(driver)
+            {
+                Configuration = config
+            };
         }
     }
 }

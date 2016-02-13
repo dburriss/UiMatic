@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "0.1.0-rc1-update1",
   "description": "I create page models for writing maintainable automated UI tests.",
   "authors": [ "Devon Burriss" ],
@@ -22,5 +22,7 @@
     }
   },
 
-  "dependencies": { }
+  "dependencies": {
+    "Microsoft.Extensions.Configuration.Abstractions": "1.0.0-rc1-final"
+  }
 }

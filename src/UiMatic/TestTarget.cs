@@ -1,4 +1,4 @@
-namespace ChimpLab.UiMatic
+namespace UiMatic
 {
     public enum TestTarget
     {
@@ -7,6 +7,7 @@ namespace ChimpLab.UiMatic
         Firefox,
         IE,
         Safari,
+        Opera,
         SauceLabsChrome,
         SauceLabsFirefox,
         SauceLabsIE,

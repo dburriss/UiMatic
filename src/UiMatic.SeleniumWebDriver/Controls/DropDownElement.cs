@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System;
 using System.Linq;
 
-namespace ChimpLab.UiMatic.SeleniumWebDriver.Controls
+namespace UiMatic.SeleniumWebDriver.Controls
 {
     public class DropDownSelect : IDropDownSelect
     {

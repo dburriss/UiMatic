@@ -1,6 +1,6 @@
-﻿namespace ChimpLab.UiMatic.SeleniumWebDriver.IntegrationTests.Pages
+﻿namespace UiMatic.SeleniumWebDriver.IntegrationTests.Pages
 {
-    [Url(key: "pages:home:url")]
+    [Url(key: "home")]
     public class GoogleHomePage : Page
     {
         [Selector(name: "q")]

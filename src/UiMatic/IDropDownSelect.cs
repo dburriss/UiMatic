@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace ChimpLab.UiMatic
+namespace UiMatic
 {
     public interface IDropDownSelect : IHasSelector, IHavePreferredSelectorType
     {

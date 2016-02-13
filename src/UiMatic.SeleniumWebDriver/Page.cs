@@ -8,10 +8,10 @@ using OpenQA.Selenium.Safari;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Edge;
 using System.Threading;
-using ChimpLab.UiMatic.SeleniumWebDriver.Controls;
+using UiMatic.SeleniumWebDriver.Controls;
 using System.Collections.Generic;
 
-namespace ChimpLab.UiMatic.SeleniumWebDriver
+namespace UiMatic.SeleniumWebDriver
 {
     public class Page : ViewContainer
     {
@@ -55,34 +55,34 @@ namespace ChimpLab.UiMatic.SeleniumWebDriver
             this.Configuration = configuration;
         }
 
-        public static TPage Create<TPage>(string baseUrl, IDriver driver, IConfiguration configuration = null) where TPage : Page
+        public static TPage Create<TPage>(string baseUrl, IDriver driver) where TPage : Page
         {
             //if(driver.GetType() == typeof(ChromeDriver))
             //    return new ChromeHomePage(baseUrl, driver);
             //TODO: look for driver specific page
-            var page = (TPage)Activator.CreateInstance(typeof(TPage), driver, configuration);
+            var page = (TPage)Activator.CreateInstance(typeof(TPage), driver, driver.Configuration);
             page.baseUrl = baseUrl;
-            page.Configuration = configuration;
+            page.Configuration = driver.Configuration;
             //populate IClickable, INavigate, and IInput, etc.
-            PopulatePageProperties<TPage>(page, driver, configuration);
+            PopulatePageProperties<TPage>(page, driver, driver.Configuration);
 
             return page;
         }
  
-        public static TPage Create<TPage>(IDriver driver, IConfiguration configuration = null) where TPage : Page
+        public static TPage Create<TPage>(IDriver driver) where TPage : Page
         {
-            var url = GetPageBaseUrl(typeof(TPage), configuration);
+            var url = GetPageBaseUrl(typeof(TPage), driver.Configuration);
             TPage page = null;
 
             if(string.IsNullOrEmpty(url))
             {
                 page = (TPage)Activator.CreateInstance(typeof(TPage), driver);
-                page.Configuration = configuration;
-                return PopulatePageProperties<TPage>(page, driver, configuration);
+                page.Configuration = driver.Configuration;
+                return PopulatePageProperties<TPage>(page, driver, driver.Configuration);
             }                
             else
             {
-                return Create<TPage>(url, driver, configuration);
+                return Create<TPage>(url, driver);
             }
                             
         }
@@ -94,13 +94,10 @@ namespace ChimpLab.UiMatic.SeleniumWebDriver
             if (urlAttr == null)
             {
                 var key = type.Name;
-                if (configuration.CustomSettings != null && configuration.CustomSettings.ContainsKey(key))
+                var page = configuration.GetPageSetting(key);
+                if (page != null)
                 {
-                    var url = string.Empty;
-                    if (configuration.CustomSettings.TryGetValue(key, out url))
-                    {
-                        return url;
-                    }
+                    return page.Url;
                 }
                 else return null;
             }
@@ -110,12 +107,13 @@ namespace ChimpLab.UiMatic.SeleniumWebDriver
                 return urlAttr.Address;
             }
 
-            if (!string.IsNullOrEmpty(urlAttr.Key) && configuration != null && configuration.CustomSettings != null && configuration.CustomSettings.ContainsKey(urlAttr.Key))
+            
+            if (!string.IsNullOrEmpty(urlAttr.Key) && configuration != null)
             {
-                var url = string.Empty;
-                if(configuration.CustomSettings.TryGetValue(urlAttr.Key, out url))
+                var page = configuration.GetPageSetting(urlAttr.Key);
+                if(page != null)
                 {
-                    return url;
+                    return page.Url;
                 }                
             }
 

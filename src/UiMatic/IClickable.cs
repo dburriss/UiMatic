@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChimpLab.UiMatic
+namespace UiMatic
 {
     public interface IClickable : IHasSelector, IHavePreferredSelectorType
     {

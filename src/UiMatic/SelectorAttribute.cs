@@ -1,6 +1,6 @@
 using System;
 
-namespace ChimpLab.UiMatic
+namespace UiMatic
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class SelectorAttribute : Attribute

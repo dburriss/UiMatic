@@ -1,4 +1,4 @@
-namespace ChimpLab.UiMatic.SeleniumWebDriver
+namespace UiMatic.SeleniumWebDriver
 {
     public class SauceLabsConstants
     {

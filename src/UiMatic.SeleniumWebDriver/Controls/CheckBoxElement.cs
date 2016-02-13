@@ -1,6 +1,6 @@
 using System;
 
-namespace ChimpLab.UiMatic.SeleniumWebDriver.Controls
+namespace UiMatic.SeleniumWebDriver.Controls
 {
     public class CheckBoxElement : ICheckBox
     {

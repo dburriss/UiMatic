@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace ChimpLab.UiMatic
+namespace UiMatic
 {
     /// <summary>
     /// Only works with Name selector

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ChimpLab.UiMatic
+namespace UiMatic
 {
     public interface ICanSearch
     {

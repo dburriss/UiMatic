@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-namespace ChimpLab.UiMatic.SeleniumWebDriver
+namespace UiMatic.SeleniumWebDriver
 {
     public class WebDriver : IDriver
     {
+        public IConfiguration Configuration { get; set; }
         public IWebDriver _WebDriver { get; private set; }
+
         public WebDriver(IWebDriver driver)
         {
             this._WebDriver = driver;

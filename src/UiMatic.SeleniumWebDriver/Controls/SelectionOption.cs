@@ -1,4 +1,4 @@
-﻿namespace ChimpLab.UiMatic.SeleniumWebDriver.Controls
+﻿namespace UiMatic.SeleniumWebDriver.Controls
 {
     public class SelectionOption : ISelectionOption
     {

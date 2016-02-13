@@ -3,8 +3,56 @@ I create page models for writing maintainable automated UI tests.
 
 The UiMatic framework allows you to create models that represent your pages. The Type of the property and the SelectorAttribute are used to map the UI elements and provide functionality to easily interact with them in your automated tests.
 
-## Basic Usage
+## Basic Example
 
+This example navigates to Google's Terms of Service page and checks the title matches what is expected.
+
+First lets create a class that represents the Terms of Service web page:
+
+```csharp
+[Url(address: "https://www.google.co.za/intl/en/policies/terms/regional.html")]
+public class GoogleTermsPage : Page
+{
+    public GoogleTermsPage(IDriver driver, IConfiguration config) : base(driver, config)
+    { }
+}
+```
+
+And here is the test:
+
+```csharp
+public class PageTests : TestBase
+{
+    [Theory]
+    [InlineData(TestTarget.Chrome)]
+    public void Title_OnGoogleTermsPageNoConfig_IsGoogle(TestTarget target)
+    {
+        //create a driver with default configuration
+        using (IDriver driver = GetDriver(target))
+        {
+            //create page model for test
+            var termsPage = Page.Create<GoogleTermsPage>(driver).Go<GoogleTermsPage>();
+
+            //check the titles match
+            Assert.Equal("Google Terms of Service – Privacy & Terms – Google", termsPage.Title);
+        }
+    }
+}
+```
+
+The test assumes you have the Chrome selenium driver located at *C:\Selenium\chromedriver_win32*
+> This needs to be updated for cross platform handling. 
+Or you can use the **appsettings.json** file is setup like so:
+
+```json
+{
+    "configuration": {
+        "ChromeDriverLocation": "D:\\devtools\\Selenium\\chromedriver_win32"
+    }
+}
+```
+
+## Deeper Example
 Here is a test that navigates to the Google home page (using Xunit test framework):
 
 ```csharp
@@ -85,6 +133,10 @@ And the **appsettings.json** file is setup like so:
         "home": {
             "title": "Search",
             "url": "http://www.google.com/"
+        },
+        "GoogleTermsPage": {
+            "title": "Google Terms of Service – Privacy & Terms – Google",
+            "url": "https://www.google.co.za/intl/en/policies/terms/regional.html"
         }
     }
 }

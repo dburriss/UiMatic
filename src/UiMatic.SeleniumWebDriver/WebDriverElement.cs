@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using OpenQA.Selenium;
 using System.Linq;
 
-namespace ChimpLab.UiMatic.SeleniumWebDriver
+namespace UiMatic.SeleniumWebDriver
 {
     public class WebDriverElement : IElement
     {

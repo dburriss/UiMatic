@@ -1,13 +1,10 @@
 using System;
-using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
 
-namespace ChimpLab.UiMatic.SeleniumWebDriver.Controls
-{ 
+namespace UiMatic.SeleniumWebDriver.Controls
+{
     public class NavigateElement<TPage> : INavigate<TPage> where TPage : Page
     {
         protected readonly IDriver driver;
-        protected readonly IConfiguration Configuration;
 
         //public Action ClickAction { get; set; }
         public Selector Selector { get; set; }
@@ -45,7 +42,7 @@ namespace ChimpLab.UiMatic.SeleniumWebDriver.Controls
             }
 
             if(clicked)
-                return Page.Create<TPage>(this.driver, this.Configuration);
+                return Page.Create<TPage>(this.driver);
 
             throw new Exception("Not sure what to do.");
         }
@@ -57,10 +54,9 @@ namespace ChimpLab.UiMatic.SeleniumWebDriver.Controls
 
         //}
 
-        public NavigateElement(IDriver driver, IConfiguration configuration)
+        public NavigateElement(IDriver driver)
         {
             this.driver = driver;
-            this.Configuration = configuration;
         }
 
 
