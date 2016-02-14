@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Uimatic by dburriss</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Uimatic</h1>
+      <h2 class="project-tagline">I create page models for writing maintainable automated UI tests.</h2>
+      <a href="https://github.com/dburriss/UiMatic" class="btn">View on GitHub</a>
+      <a href="https://github.com/dburriss/UiMatic/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/dburriss/UiMatic/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="uimatic" class="anchor" href="#uimatic" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UiMatic</h1>
+
+<p>I create page models for writing maintainable automated UI tests.</p>
+
+<p>The UiMatic framework allows you to create models that represent your pages. The Type of the property and the SelectorAttribute are used to map the UI elements and provide functionality to easily interact with them in your automated tests.</p>
+
+<h2>
+<a id="nuget-install" class="anchor" href="#nuget-install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nuget Install</h2>
+
+<pre><code>Install-Package UiMatic.SeleniumWebDriver -Pre
+</code></pre>
+
+<h2>
+<a id="basic-example" class="anchor" href="#basic-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic Example</h2>
+
+<p>This example navigates to Google's Terms of Service page and checks the title matches what is expected.</p>
+
+<p>First lets create a class that represents the Terms of Service web page:</p>
+
+<div class="highlight highlight-source-cs"><pre>[Url(address: <span class="pl-s"><span class="pl-pds">"</span>https://www.google.co.za/intl/en/policies/terms/regional.html<span class="pl-pds">"</span></span>)]
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">GoogleTermsPage</span> : <span class="pl-k">Page</span>
+{
+    <span class="pl-k">public</span> <span class="pl-en">GoogleTermsPage</span>(<span class="pl-k">IDriver</span> <span class="pl-smi">driver</span>) : <span class="pl-c1">base</span>(driver)
+    { }
+}</pre></div>
+
+<p>And here is the test:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">PageTests</span> : <span class="pl-k">TestBase</span>
+{
+    [Theory]
+    [InlineData(TestTarget.Chrome)]
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Title_OnGoogleTermsPageNoConfig_IsGoogle</span>(<span class="pl-k">TestTarget</span> <span class="pl-smi">target</span>)
+    {
+        <span class="pl-c">//create a driver with default configuration</span>
+        <span class="pl-k">using</span> (IDriver driver = GetDriver(target))
+        {
+            <span class="pl-c">//create page model for test</span>
+            <span class="pl-k">var</span> termsPage = Page.Create&lt;GoogleTermsPage&gt;(driver).Go&lt;GoogleTermsPage&gt;();
+
+            <span class="pl-c">//check the titles match</span>
+            Assert.Equal(<span class="pl-s"><span class="pl-pds">"</span>Google Terms of Service – Privacy &amp; Terms – Google<span class="pl-pds">"</span></span>, termsPage.Title);
+        }
+    }
+}</pre></div>
+
+<p>The test assumes you have the Chrome selenium driver located at <em>C:\Selenium\chromedriver_win32</em></p>
+
+<blockquote>
+<p>This needs to be updated for cross platform handling. </p>
+</blockquote>
+
+<p>Or you can use the <strong>appsettings.json</strong> file in the root of your test project:</p>
+
+<div class="highlight highlight-source-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>configuration<span class="pl-pds">"</span></span>: {
+        <span class="pl-s"><span class="pl-pds">"</span>ChromeDriverLocation<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>D:<span class="pl-cce">\\</span>devtools<span class="pl-cce">\\</span>Selenium<span class="pl-cce">\\</span>chromedriver_win32<span class="pl-pds">"</span></span>
+    }
+}</pre></div>
+
+<h2>
+<a id="deeper-example" class="anchor" href="#deeper-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Deeper Example</h2>
+
+<p>Here is a test that navigates to the Google home page (using Xunit test framework):</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">PageTests</span> : <span class="pl-k">TestBase</span>
+{
+    [Theory]
+    [InlineData(TestTarget.Chrome)]
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Title_OnGoogleHomePageUsingConfig_IsGoogle</span>(<span class="pl-k">TestTarget</span> <span class="pl-smi">target</span>)
+    {
+        <span class="pl-c">//build a custom config</span>
+        <span class="pl-k">var</span> config = GetDriverConfig(target);
+        <span class="pl-k">using</span> (IDriver driver = GetDriver(target, config))
+        {
+            <span class="pl-c">//create page model for test</span>
+            <span class="pl-k">var</span> homePage = Page.Create&lt;GoogleHomePage&gt;(driver);
+
+            <span class="pl-c">//tell browser to navigate to it</span>
+            homePage.Go&lt;GoogleHomePage&gt;();
+
+            <span class="pl-c">//fill a value into the text box</span>
+            homePage.SearchBox.Value = <span class="pl-s"><span class="pl-pds">"</span>TEST<span class="pl-pds">"</span></span>;
+
+            <span class="pl-c">//an example of interacting with the config if needed. This gets expected title from config. </span>
+            <span class="pl-k">var</span> expectedTitle = config.GetPageSetting(<span class="pl-s"><span class="pl-pds">"</span>home<span class="pl-pds">"</span></span>).Title;
+
+            <span class="pl-c">//check the titles match</span>
+            Assert.Equal(expectedTitle, homePage.Title);
+        }
+    }
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> IConfiguration <span class="pl-en">GetDriverConfig</span>(<span class="pl-k">TestTarget</span> <span class="pl-smi">target</span>)
+    {
+        IConfigurationRoot config = GetConfigurationRoot();
+        <span class="pl-c">//create a IConfiguration using DefaultConfig. Create your own if needed but first explore the options in Microsoft's ConfigurationBuilder</span>
+        <span class="pl-k">var</span> configModel = <span class="pl-k">new</span> DefaultConfig(target, config);
+        <span class="pl-k">return</span> configModel;
+    }
+
+    <span class="pl-k">private</span> <span class="pl-k">static</span> IConfigurationRoot <span class="pl-en">GetConfigurationRoot</span>()
+    {
+        <span class="pl-k">var</span> builder = <span class="pl-k">new</span> ConfigurationBuilder();
+        <span class="pl-k">var</span> testFolder = <span class="pl-k">new</span> DirectoryInfo(Directory.GetCurrentDirectory()).FullName;
+        builder.SetBasePath(testFolder);
+        <span class="pl-c">//use json file to configure settings. See http://docs.asp.net/en/latest/fundamentals/configuration.html for more detail on CongifurationBuilder</span>
+        builder.AddJsonFile(<span class="pl-s"><span class="pl-pds">"</span>appsettings.json<span class="pl-pds">"</span></span>);
+        <span class="pl-k">var</span> config = builder.Build();
+        <span class="pl-k">return</span> config;
+    } 
+}</pre></div>
+
+<p>Where the GoogleHomePage model looks like this:</p>
+
+<div class="highlight highlight-source-cs"><pre>[Url(key: <span class="pl-s"><span class="pl-pds">"</span>home<span class="pl-pds">"</span></span>)]
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">GoogleHomePage</span> : <span class="pl-k">Page</span>
+{
+    [Selector(name: <span class="pl-s"><span class="pl-pds">"</span>q<span class="pl-pds">"</span></span>)]
+    <span class="pl-k">public</span> IInput <span class="pl-en">SearchBox</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+
+    <span class="pl-k">public</span> <span class="pl-en">GoogleHomePage</span>(<span class="pl-k">IDriver</span> <span class="pl-smi">driver</span>) : <span class="pl-c1">base</span>(driver)
+    {}
+}</pre></div>
+
+<blockquote>
+<p>Note the use of a <strong>key</strong> to identify the Url rather than an explicit url address. This will allow your tests to be run against different environments.</p>
+</blockquote>
+
+<p>If a url is specified in <code>UrlAttribute</code> that will be used. If a <strong>key</strong> is specified, that will be used. If <strong>no</strong> <code>UrlAttribute</code> is present the page Type name will be used if it is present in the configuration.
+<code>GoogleTermsPage</code> below is an example of looking up via type name.</p>
+
+<p>And the <strong>appsettings.json</strong> file is setup like so:</p>
+
+<div class="highlight highlight-source-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>configuration<span class="pl-pds">"</span></span>: {
+        <span class="pl-s"><span class="pl-pds">"</span>IEDriverLocation<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>ChromeDriverLocation<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>D:<span class="pl-cce">\\</span>devtools<span class="pl-cce">\\</span>Selenium<span class="pl-cce">\\</span>chromedriver_win32<span class="pl-pds">"</span></span>
+    },
+    <span class="pl-s"><span class="pl-pds">"</span>pages<span class="pl-pds">"</span></span>: {
+        <span class="pl-s"><span class="pl-pds">"</span>home<span class="pl-pds">"</span></span>: {
+            <span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>Search<span class="pl-pds">"</span></span>,
+            <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>http://www.google.com/<span class="pl-pds">"</span></span>
+        },
+        <span class="pl-s"><span class="pl-pds">"</span>GoogleTermsPage<span class="pl-pds">"</span></span>: {
+            <span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>Google Terms of Service – Privacy &amp; Terms – Google<span class="pl-pds">"</span></span>,
+            <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>https://www.google.co.za/intl/en/policies/terms/regional.html<span class="pl-pds">"</span></span>
+        }
+    }
+}</pre></div>
+
+<h2>
+<a id="available-control-types" class="anchor" href="#available-control-types" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Available Control Types</h2>
+
+<p>Above you saw the usage of <code>IInput</code> but UiMatic has plenty other controls.</p>
+
+<ul>
+<li>
+<code>IInput</code> - your basic input textbox</li>
+<li>
+<code>IClickable</code> - for any element you want to be able to click on and do something</li>
+<li>
+<code>INavigate&lt;T&gt;</code> - like IClickable but returns the page model of the generic type</li>
+<li>
+<code>IRadioGroup</code> - to represent radio buttons</li>
+<li>
+<code>ICheckBox</code> - to represent a checkbox</li>
+<li>
+<code>IDropDownSelect</code> - to represent dropdowns with a single select option</li>
+<li>
+<code>IMultiSelect</code> - to represent dropdowns with a multiple select option</li>
+<li>
+<code>IElement</code> - a general purpose element you want represented in your model</li>
+</ul>
+
+<h2>
+<a id="selectors" class="anchor" href="#selectors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Selectors</h2>
+
+<p>The selector attribute allows you to select an element based on id, name, css style, or xpath.</p>
+
+<p>In the Google homepage example we saw an example of a name selector <code>[Selector(name: "q")]</code> placed on the search box.
+Simply placing the <code>SelectorAttribute</code> on the property representing the element on the UI being tested will bind it using the chosen selection criteria.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/dburriss/UiMatic">Uimatic</a> is maintained by <a href="https://github.com/dburriss">dburriss</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
