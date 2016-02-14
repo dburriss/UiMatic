@@ -3,6 +3,9 @@ I create page models for writing maintainable automated UI tests.
 
 The UiMatic framework allows you to create models that represent your pages. The Type of the property and the SelectorAttribute are used to map the UI elements and provide functionality to easily interact with them in your automated tests.
 
+## Nuget Install
+    Install-Package UiMatic.SeleniumWebDriver -Pre
+
 ## Basic Example
 
 This example navigates to Google's Terms of Service page and checks the title matches what is expected.
