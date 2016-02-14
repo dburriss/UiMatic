@@ -146,7 +146,7 @@ namespace UiMatic.SeleniumWebDriver
                 var tToMake = typeof(NavigateElement<>);
                 var genericArgs = propType.GetGenericArguments();
                 Type constructed = tToMake.MakeGenericType(genericArgs);
-                var el = Activator.CreateInstance(constructed, driver, configuration);
+                var el = Activator.CreateInstance(constructed, driver);
                 Selector s = GetSelector(prop, el);
                 var vObj = el as IHasSelector;
                 if(vObj != null)

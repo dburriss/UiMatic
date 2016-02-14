@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0-rc1-update1",
+  "version": "0.2.1-rc1-update1",
   "description": "I provide Selenium webdriver support for UiMatic.",
   "authors": [ "Devon Burriss" ],
   "tags": [ "automated testing unit test selenium saucelabs" ],

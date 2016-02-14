@@ -47,6 +47,20 @@ namespace UiMatic.SeleniumWebDriver.IntegrationTests
             }
         }
 
+        [Theory]
+        [InlineData(TestTarget.Chrome)]
+        public void Navigate_FromHomeToTerms_TitleIsTerms(TestTarget target)
+        {
+
+            using (IDriver driver = GetDriver(target))
+            {
+                var homePage = Page.Create<GoogleHomePage>(driver).Go<GoogleHomePage>();
+                var termsPage = homePage.TermsLink.Click();
+
+                Assert.Equal("Google Terms of Service – Privacy & Terms – Google", termsPage.Title);
+            }
+        }
+
         public IConfiguration GetDriverConfig(TestTarget target)
         {
             IConfigurationRoot config = GetConfigurationRoot();
