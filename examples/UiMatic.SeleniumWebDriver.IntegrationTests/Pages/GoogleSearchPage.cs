@@ -1,7 +1,7 @@
 ﻿namespace UiMatic.SeleniumWebDriver.IntegrationTests.Pages
 {
-    [Url(key: "home")]
-    public class GoogleHomePage : Page
+    [Url(key: "search")]
+    public class GoogleSearchPage : Page
     {
         [Selector(name: "q")]
         public IInput SearchBox { get; set; }
@@ -12,7 +12,7 @@
         [Selector(xpath: "//*[@id='fsr']/a[2]")]
         public INavigate<GoogleTermsPage> TermsLink { get; set; }
 
-        public GoogleHomePage(IDriver driver) : base(driver)
+        public GoogleSearchPage(IDriver driver) : base(driver)
         {}
     }
 }

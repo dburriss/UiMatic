@@ -41,18 +41,18 @@ namespace UiMatic.SeleniumWebDriver
         }
         #endregion
 
-        public Page(string baseUrl, IDriver driver, IConfiguration configuration = null)// : base(driver, configuration)
+        public Page(string baseUrl, IDriver driver)// : base(driver, configuration)
         {
             this.driver = driver;
             this.baseUrl = baseUrl;
-            this.Configuration = configuration;
+            this.Configuration = driver.Configuration;
         }
 
-        public Page(IDriver driver, IConfiguration configuration = null)// : base(driver, configuration)
+        public Page(IDriver driver)// : base(driver, configuration)
         {
             this.driver = driver;
             this.baseUrl = driver.AsIWebDriver().Url;
-            this.Configuration = configuration;
+            this.Configuration = driver.Configuration;
         }
 
         public static TPage Create<TPage>(string baseUrl, IDriver driver) where TPage : Page
@@ -60,11 +60,11 @@ namespace UiMatic.SeleniumWebDriver
             //if(driver.GetType() == typeof(ChromeDriver))
             //    return new ChromeHomePage(baseUrl, driver);
             //TODO: look for driver specific page
-            var page = (TPage)Activator.CreateInstance(typeof(TPage), driver, driver.Configuration);
+            var page = (TPage)Activator.CreateInstance(typeof(TPage), driver);
             page.baseUrl = baseUrl;
-            page.Configuration = driver.Configuration;
+            //page.Configuration = driver.Configuration;
             //populate IClickable, INavigate, and IInput, etc.
-            PopulatePageProperties<TPage>(page, driver, driver.Configuration);
+            PopulatePageProperties<TPage>(page, driver);
 
             return page;
         }
@@ -78,7 +78,7 @@ namespace UiMatic.SeleniumWebDriver
             {
                 page = (TPage)Activator.CreateInstance(typeof(TPage), driver);
                 page.Configuration = driver.Configuration;
-                return PopulatePageProperties<TPage>(page, driver, driver.Configuration);
+                return PopulatePageProperties<TPage>(page, driver);
             }                
             else
             {
@@ -120,14 +120,14 @@ namespace UiMatic.SeleniumWebDriver
             return null;
         }
 
-        private static TPage PopulatePageProperties<TPage>(TPage page, IDriver driver, IConfiguration configuration)
+        private static TPage PopulatePageProperties<TPage>(TPage page, IDriver driver)
         {
             //populate IClickable, INavigate, and IInput, etc.
             var properties = page.GetType().GetProperties();
             foreach (var prop in properties)
             {
                 ProcessClickables<TPage>(prop, driver, page);
-                ProcessNavigators<TPage>(prop, driver, page, configuration);
+                ProcessNavigators<TPage>(prop, driver, page);
                 ProcessInput<TPage>(prop, driver, page);
                 ProcessDropDownSelect<TPage>(prop, driver, page);
                 ProcessMultiSelect<TPage>(prop, driver, page);
@@ -137,7 +137,7 @@ namespace UiMatic.SeleniumWebDriver
             return page;
         }
 
-        private static void ProcessNavigators<TPage>(PropertyInfo prop, IDriver driver, TPage page, IConfiguration configuration)
+        private static void ProcessNavigators<TPage>(PropertyInfo prop, IDriver driver, TPage page)
         {
             Type propType = prop.PropertyType;
 

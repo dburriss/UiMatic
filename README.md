@@ -16,7 +16,7 @@ First lets create a class that represents the Terms of Service web page:
 [Url(address: "https://www.google.co.za/intl/en/policies/terms/regional.html")]
 public class GoogleTermsPage : Page
 {
-    public GoogleTermsPage(IDriver driver, IConfiguration config) : base(driver, config)
+    public GoogleTermsPage(IDriver driver) : base(driver)
     { }
 }
 ```
@@ -117,7 +117,7 @@ public class GoogleHomePage : Page
     [Selector(name: "q")]
     public IInput SearchBox { get; set; }
 
-    public GoogleHomePage(IDriver driver, IConfiguration config) : base(driver, config)
+    public GoogleHomePage(IDriver driver) : base(driver)
     {}
 }
 ```
