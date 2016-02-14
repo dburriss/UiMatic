@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace UiMatic.SeleniumWebDriver.IntegrationTests
 {
-    public class PageTests : TestBase
+    public class GooglePageTests : TestBase
     {
         [Theory]
         [InlineData(TestTarget.Chrome)]

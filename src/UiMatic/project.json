@@ -1,9 +1,9 @@
 {
-  "version": "0.2.0-rc1-update1",
+  "version": "0.3.0-rc1-update1",
   "description": "I create page models for writing maintainable automated UI tests. This is the core project used in the web driver implementations. You require a webdriver like UiMatic.SeleniumWebDriver.",
   "authors": [ "Devon Burriss" ],
   "tags": [ "automated testing unit test selenium codedui saucelabs" ],
-  "projectUrl": "https://github.com/dburriss/UiMatic",
+  "projectUrl": "http://dburriss.github.io/UiMatic/",
   "licenseUrl": "https://github.com/dburriss/UiMatic/blob/master/LICENSE",
 
   "frameworks": {
